@@ -25,7 +25,7 @@ export class ProductFormComponent implements OnInit, OnDestroy {
     productDatas: Array<GetAllProductResponse>;
   };
 
-  public productSelectedDatas!: Array<GetAllProductResponse>;
+  public productSelectedDatas!: GetAllProductResponse;
 
   public addForm!: FormGroup;
   public editForm!: FormGroup;
@@ -47,9 +47,8 @@ export class ProductFormComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.productAction = this.ref.data;
-    this.getAllCategories();
-
     this.carregarForm();
+    this.getAllCategories();
   }
 
   carregarForm() {
@@ -120,6 +119,19 @@ export class ProductFormComponent implements OnInit, OnDestroy {
         (element) => element?.id === product_id
       );
       console.log(productFiltered);
+
+      if (productFiltered.length > 0) {
+        this.productSelectedDatas = productFiltered[0];
+        console.log(this.productSelectedDatas);
+
+        this.editForm.setValue({
+          name: this.productSelectedDatas?.name,
+          price: this.productSelectedDatas?.price,
+          description: this.productSelectedDatas?.description,
+          category_id: this.productSelectedDatas?.category.id,
+          amount: this.productSelectedDatas?.amount,
+        });
+      }
     }
   }
 
@@ -158,6 +170,8 @@ export class ProductFormComponent implements OnInit, OnDestroy {
       this.addForm.reset();
     }
   }
+
+  handleSubmitEdit(): void {}
 
   ngOnDestroy(): void {
     this.destroy$.next();
