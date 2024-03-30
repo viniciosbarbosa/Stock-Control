@@ -1,5 +1,9 @@
 <app-toolbar></app-toolbar>
 
 <div class="col-12">
-  <app-categories-table [categories]="categoriesDatas"></app-categories-table>
+  <app-categories-table
+    [categories]="categoriesDatas"
+    (deleteCategoryEvent)="handleDeleteCategoryAction($event)"
+    (categoryEvent)="handleCategoryAction($event)"
+  ></app-categories-table>
 </div>

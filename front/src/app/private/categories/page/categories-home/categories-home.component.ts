@@ -5,6 +5,9 @@ import { Subject, take, takeUntil } from 'rxjs';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { GetCategoriesResponse } from 'src/app/models/interfaces/categories/responses/GetCategoriesResponse';
+import { CategoryFormComponent } from '../../components/category-form/category-form.component';
+import { EventAction } from 'src/app/models/interfaces/products/event/EventAction';
+import { DeleteCategoryAction } from 'src/app/models/interfaces/categories/event/DeleteCategoryAction';
 
 @Component({
   selector: 'app-categories-home',
@@ -48,6 +51,59 @@ export class CategoriesHomeComponent implements OnInit, OnDestroy {
             this.router.navigate(['/home']);
         },
       });
+  }
+
+  handleCategoryAction(event: EventAction) {
+    if (event) {
+      this.ref = this.dialogService.open(CategoryFormComponent, {
+        header: event.action,
+        width: '70%',
+        contentStyle: { overflow: 'auto' },
+        baseZIndex: 1000,
+        maximizable: true,
+        data: {
+          event: event,
+        },
+      });
+
+      this.ref.onClose.pipe(takeUntil(this.destroy$)).subscribe({
+        next: () => this.getAllCategories(),
+      });
+    }
+  }
+
+  handleDeleteCategoryAction(event: DeleteCategoryAction): void {
+    if (event) {
+      this.deleteCategory(event.category_id);
+    }
+  }
+
+  deleteCategory(category_id: string): void {
+    if (category_id) {
+      this.categoriesService
+        .deleteCategory({ category_id })
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: (response) => {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Sucesso',
+              detail: 'Categoria removida com sucesso!',
+              life: 2500,
+            });
+            this.getAllCategories();
+          },
+          error: (err) => {
+            this.messageService.add({
+              severity: 'erro',
+              summary: 'Erro',
+              detail: 'Error ao remover categoria!',
+              life: 2500,
+            });
+            this.getAllCategories();
+          },
+        });
+    }
   }
 
   ngOnDestroy(): void {
