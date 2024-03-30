@@ -93,6 +93,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
               'rgb(201, 203, 207)',
             ],
             data: this.productList.map((element) => element?.amount),
+            barThickness: 150,
           },
         ],
       };

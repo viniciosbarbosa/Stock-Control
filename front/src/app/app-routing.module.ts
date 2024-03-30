@@ -20,6 +20,14 @@ const routes: Routes = [
       import('./private/home/home.module').then((m) => m.HomeModule),
     canActivate: [AuthGuard],
   },
+  {
+    path: 'products',
+    loadChildren: () =>
+      import('./private/products/products.module').then(
+        (m) => m.ProductsModule
+      ),
+    canActivate: [AuthGuard],
+  },
 ];
 
 @NgModule({
