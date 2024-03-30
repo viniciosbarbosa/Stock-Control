@@ -52,6 +52,7 @@ export class LoginComponent implements OnInit, OnDestroy {
           next: (response) => {
             console.log(response);
             this.cockieService.set('User_Token', response?.token);
+            this.cockieService.set('User_Id', response?.id);
             this.loginForm.reset();
             this.router.navigate(['/home']);
 
