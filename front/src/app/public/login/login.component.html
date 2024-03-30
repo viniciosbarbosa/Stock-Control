@@ -1,1 +1,54 @@
-<p>login works!</p>
+<div class="grid">
+  <div class="col-12">
+    <div
+      class="flex justify-content-center align-content-center text-align-center"
+    >
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmitLoginForm()">
+        <p-card
+          styleClass="mt-10"
+          header="Login"
+          subheader="Faça login com sua conta existente!"
+        >
+          <div
+            class="flex justify-content-center align-content-center text-align-center"
+          >
+            <input
+              #emailInput
+              type="email"
+              pInputText
+              placeholder="Email"
+              formControlName="email"
+            />
+          </div>
+          <div
+            class="flex justify-content-center align-content-center text-align-center mt-3"
+          >
+            <input
+              #passwordInput
+              type="password"
+              pInputText
+              placeholder="Senha"
+              formControlName="password"
+            />
+          </div>
+          <div class="card flex justify-content-center mt-3">
+            <button
+              type="submit"
+              pButton
+              pRipple
+              label="Login"
+              [disabled]="!this.loginForm.valid"
+            ></button>
+          </div>
+
+          <div>
+            <span class="chamada-cadastro">Não possui cadastro ?</span>
+            <span class="btn-cadastro" (click)="openModalRegister()"
+              >Clique Aqui</span
+            >
+          </div>
+        </p-card>
+      </form>
+    </div>
+  </div>
+</div>

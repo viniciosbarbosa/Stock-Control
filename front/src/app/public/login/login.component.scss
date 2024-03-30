@@ -1,0 +1,32 @@
+.grid {
+  margin: 0px;
+  background-image: url(../../../assets/backgroundLogin.jpg);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  display: flex;
+  align-items: stretch;
+}
+
+.chamada-cadastro {
+  color: grey;
+  font-size: 14px;
+  display: block;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.btn-cadastro {
+  color: rgb(84, 84, 84);
+  font-size: 1rem;
+  text-align: center;
+  cursor: pointer;
+  display: block;
+  margin-top: 10px;
+  transition: 0.3s;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+}

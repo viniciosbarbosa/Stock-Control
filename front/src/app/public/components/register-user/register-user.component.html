@@ -1,0 +1,47 @@
+<div class="grid">
+  <div class="col-12">
+    <div class="w-100">
+      <form [formGroup]="registerForm" (ngSubmit)="handleRegisterUser()">
+        <div class="mt-3">
+          <input
+            class="full-width"
+            #emailInput
+            type="text"
+            pInputText
+            placeholder="Nome"
+            formControlName="name"
+          />
+        </div>
+        <div class="mt-3">
+          <input
+            class="full-width"
+            #emailInput
+            type="email"
+            pInputText
+            placeholder="Email"
+            formControlName="email"
+          />
+        </div>
+        <div class="mt-3">
+          <input
+            class="full-width"
+            #passwordInput
+            type="password"
+            pInputText
+            placeholder="Senha"
+            formControlName="password"
+          />
+        </div>
+        <div class="card flex justify-content-center mt-3">
+          <button
+            type="submit"
+            pButton
+            pRipple
+            label="Registar cadastro"
+            [disabled]="!this.registerForm.valid"
+          ></button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

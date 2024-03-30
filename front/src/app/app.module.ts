@@ -10,26 +10,28 @@ import { MessageService } from 'primeng/api';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
+import { DialogService } from 'primeng/dynamicdialog';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './public/login/login.component';
+import { RegisterUserComponent } from './public/components/register-user/register-user.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent],
+  declarations: [AppComponent, LoginComponent, RegisterUserComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    //PrimeNg
+    // PrimeNg
     CardModule,
     InputTextModule,
     ButtonModule,
     ToastModule,
   ],
-  providers: [CookieService, MessageService],
+  providers: [CookieService, MessageService, DialogService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
