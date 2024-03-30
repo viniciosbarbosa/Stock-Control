@@ -6,7 +6,8 @@ import { ProductsService } from 'src/app/services/products/products.service';
 import { ProductsDataTransferService } from 'src/app/shared/services/products-data-transfer.service';
 import { Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { DialogService } from 'primeng/dynamicdialog';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { ProductFormComponent } from '../../components/product-form/product-form.component';
 
 @Component({
   selector: 'app-products',
@@ -16,6 +17,7 @@ import { DialogService } from 'primeng/dynamicdialog';
 export class ProductsComponent implements OnInit, OnDestroy {
   private readonly destroy$: Subject<void> = new Subject();
   public productsDatas: Array<GetAllProductResponse> = [];
+  private ref!: DynamicDialogRef;
 
   constructor(
     private productsDtService: ProductsDataTransferService,
@@ -54,7 +56,22 @@ export class ProductsComponent implements OnInit, OnDestroy {
   }
 
   handleProductAction(event: EventAction): void {
-    console.log(event);
+    if (event) {
+      this.ref = this.dialogService.open(ProductFormComponent, {
+        header: event?.action,
+        width: '50%',
+        contentStyle: { overflow: 'auto' },
+        baseZIndex: 10000,
+        maximizable: true,
+        data: {
+          event: event,
+          productDatas: this.productsDatas,
+        },
+      });
+      this.ref.onClose.pipe(takeUntil(this.destroy$)).subscribe({
+        next: () => this.getProductsData(),
+      });
+    }
   }
 
   handleDeleteProductAction(event: {
