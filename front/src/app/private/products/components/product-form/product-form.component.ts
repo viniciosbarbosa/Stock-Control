@@ -1,6 +1,7 @@
 import { GetAllProductResponse } from './../../../../models/interfaces/products/response/GetAllProductResponse';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Subject, takeUntil } from 'rxjs';
@@ -9,8 +10,10 @@ import { GetCategoriesResponse } from 'src/app/models/interfaces/categories/resp
 import { EventAction } from 'src/app/models/interfaces/products/event/EventAction';
 import { CreateProductRequest } from 'src/app/models/interfaces/products/request/CreateProductRequest';
 import { EditProductRequest } from 'src/app/models/interfaces/products/request/EditProductRequest';
+import { SaleProductRequest } from 'src/app/models/interfaces/products/request/SaleProductRequest';
 import { CategoriesService } from 'src/app/services/categories/categories.service';
 import { ProductsService } from 'src/app/services/products/products.service';
+import { ProductsDataTransferService } from 'src/app/shared/services/products-data-transfer.service';
 
 @Component({
   selector: 'app-product-form',
@@ -27,11 +30,13 @@ export class ProductFormComponent implements OnInit, OnDestroy {
   };
 
   public productSelectedDatas!: GetAllProductResponse;
+  public productDatas: Array<GetAllProductResponse> = [];
 
   public addForm!: FormGroup;
   public editForm!: FormGroup;
   public saleForm!: FormGroup;
 
+  public saleProductSeleted!: GetAllProductResponse;
   public renderDropDown = false;
 
   public addProductAction = ProductEvent.add_product_event;
@@ -42,12 +47,19 @@ export class ProductFormComponent implements OnInit, OnDestroy {
     private ref: DynamicDialogConfig,
     private dialog: DynamicDialogRef,
     private categoriesServices: CategoriesService,
+    private productDtService: ProductsDataTransferService,
     private productsService: ProductsService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
     this.productAction = this.ref.data;
+
+    if (this.productAction?.event?.action === this.saleProductAction) {
+      this.getProductDatas();
+    }
+
     this.carregarForm();
     this.getAllCategories();
   }
@@ -107,6 +119,20 @@ export class ProductFormComponent implements OnInit, OnDestroy {
                 this.productAction?.event?.id as string
               );
             }
+          }
+        },
+      });
+  }
+
+  getProductDatas(): void {
+    this.productsService
+      .getAllProduct()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (response) => {
+          if (response.length > 0) {
+            this.productDatas = response;
+            response && this.productDtService.setProductsListDatas(response);
           }
         },
       });
@@ -208,7 +234,43 @@ export class ProductFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  handleSubmitEdit(): void {}
+  handleSubmitSaleProduct(): void {
+    if (this.saleForm?.value && this.saleForm.valid) {
+      const requestDatas: SaleProductRequest = {
+        amount: this.saleForm.value.amount as number,
+        product_id: this.saleForm.value.product_id as string,
+      };
+
+      this.productsService
+        .saleProduct(requestDatas)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: (response) => {
+            this.saleForm.reset();
+            this.getProductDatas();
+            this.dialog.close();
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Sucesso',
+              detail: 'Venda efetuada com sucesso!',
+              life: 2500,
+            });
+            this.router.navigate(['/home']);
+          },
+          error: (err) => {
+            this.saleForm.reset();
+            console.log(err);
+            this.dialog.close();
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Erro',
+              detail: 'Error ao vender o produto!',
+              life: 2500,
+            });
+          },
+        });
+    }
+  }
 
   ngOnDestroy(): void {
     this.destroy$.next();
