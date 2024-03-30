@@ -5,6 +5,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { Observable, map } from 'rxjs';
 import { CreateProductRequest } from 'src/app/models/interfaces/products/request/CreateProductRequest';
 import { EditProductRequest } from 'src/app/models/interfaces/products/request/EditProductRequest';
+import { DeleteProductResponse } from 'src/app/models/interfaces/products/response/DeleteProductResponse';
 import { GetAllProductResponse } from 'src/app/models/interfaces/products/response/GetAllProductResponse';
 import { environment } from 'src/environments/environment.prod';
 
@@ -47,6 +48,18 @@ export class ProductsService {
       `${this.apiUrl}/product/edit`,
       requestDatas,
       this.httpOptions
+    );
+  }
+
+  deleteProduct(product_id: string): Observable<DeleteProductResponse> {
+    return this.http.delete<DeleteProductResponse>(
+      `${this.apiUrl}/product/delete`,
+      {
+        ...this.httpOptions,
+        params: {
+          product_id: product_id,
+        },
+      }
     );
   }
 }

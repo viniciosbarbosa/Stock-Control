@@ -79,6 +79,38 @@ export class ProductsComponent implements OnInit, OnDestroy {
     productName: string;
   }): void {
     if (event) {
+      this.deleteProduct(event?.product_id);
+    }
+  }
+
+  deleteProduct(product_id: string) {
+    if (product_id) {
+      this.productsService
+        .deleteProduct(product_id)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: (response) => {
+            if (response) {
+              this.messageService.add({
+                severity: 'success',
+                summary: 'Sucesso',
+                detail: 'Produto removido com sucesso!',
+                life: 2500,
+              });
+
+              this.getProductsData();
+            }
+          },
+          error: (err) => {
+            console.log(err);
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Erro',
+              detail: 'Erro ao remover produto!',
+              life: 2500,
+            });
+          },
+        });
     }
   }
 

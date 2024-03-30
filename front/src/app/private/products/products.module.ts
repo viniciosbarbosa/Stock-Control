@@ -21,7 +21,11 @@ import { ProductsTableComponent } from './components/products-table/products-tab
 import { ProductFormComponent } from './components/product-form/product-form.component';
 
 @NgModule({
-  declarations: [ProductsComponent, ProductsTableComponent, ProductFormComponent],
+  declarations: [
+    ProductsComponent,
+    ProductsTableComponent,
+    ProductFormComponent,
+  ],
   imports: [
     CommonModule,
     FormsModule,
@@ -41,6 +45,6 @@ import { ProductFormComponent } from './components/product-form/product-form.com
     ConfirmDialogModule,
     TooltipModule,
   ],
-  providers: [DialogService, ConfirmationService],
+  providers: [DialogService, ConfirmationService, ConfirmDialogModule],
 })
 export class ProductsModule {}
