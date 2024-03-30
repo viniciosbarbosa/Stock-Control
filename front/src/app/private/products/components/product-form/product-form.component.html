@@ -33,7 +33,7 @@
 </div>
 
 <div *ngIf="productAction?.event?.action === editProductAction">
-  <form [formGroup]="editForm" (ngSubmit)="handleSubmitAddProduct()">
+  <form [formGroup]="editForm" (ngSubmit)="handleSubmitEditProduct()">
     <div class="card flex flex-column md:flex-column gap-3">
       <input pInputText placeholder="Nome" formControlName="name" />
 

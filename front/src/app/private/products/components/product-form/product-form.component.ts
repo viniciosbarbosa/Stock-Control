@@ -8,6 +8,7 @@ import { ProductEvent } from 'src/app/models/enum/products/ProductEvent';
 import { GetCategoriesResponse } from 'src/app/models/interfaces/categories/responses/GetCategoriesResponse';
 import { EventAction } from 'src/app/models/interfaces/products/event/EventAction';
 import { CreateProductRequest } from 'src/app/models/interfaces/products/request/CreateProductRequest';
+import { EditProductRequest } from 'src/app/models/interfaces/products/request/EditProductRequest';
 import { CategoriesService } from 'src/app/services/categories/categories.service';
 import { ProductsService } from 'src/app/services/products/products.service';
 
@@ -168,6 +169,42 @@ export class ProductFormComponent implements OnInit, OnDestroy {
         });
 
       this.addForm.reset();
+    }
+  }
+
+  handleSubmitEditProduct(): void {
+    if (this.editForm?.valid && this.editForm?.value) {
+      const requestEditProduct: EditProductRequest = {
+        name: this.editForm.value.name as string,
+        price: this.editForm.value.price as string,
+        product_id: this.productAction?.event.id as string,
+        description: this.editForm.value.description as string,
+        category_id: this.editForm.value.category_id as string,
+        amount: Number(this.editForm.value.amount),
+      };
+
+      this.productsService
+        .editProduct(requestEditProduct)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: (response) => {
+            this.dialog.close();
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Sucesso',
+              detail: 'Produto editado com sucesso',
+            });
+            this.editForm.reset();
+          },
+          error: (err) => {
+            this.dialog.close();
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Erro',
+              detail: 'Erro ao editar produto',
+            });
+          },
+        });
     }
   }
 
