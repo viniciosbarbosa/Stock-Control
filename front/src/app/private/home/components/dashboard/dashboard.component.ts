@@ -4,6 +4,7 @@ import { MessageService } from 'primeng/api';
 import { Subject, takeUntil } from 'rxjs';
 import { GetAllProductResponse } from 'src/app/models/interfaces/products/response/GetAllProductResponse';
 import { ProductsService } from 'src/app/services/products/products.service';
+import { ProductsDataTransferService } from 'src/app/shared/services/products-data-transfer.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,6 +17,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   constructor(
     private productsService: ProductsService,
+    private productsDtService: ProductsDataTransferService,
     private messageservice: MessageService
   ) {}
 
@@ -31,7 +33,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         next: (response) => {
           if (response.length > 0) {
             this.productList = response;
-            console.log(this.productList);
+            this.productsDtService.setProductsListDatas(response);
           }
         },
         error: (err) => {
