@@ -29,19 +29,21 @@ export class ProductsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.verifyServieProductData();
+    this.getProductsData();
+    this.verifyServiceProductData();
   }
 
-  verifyServieProductData(): void {
+  async verifyServiceProductData(): Promise<void> {
     const productsLoaded = this.productsDtService.getProductsData();
     if (productsLoaded.length > 0) {
+      await this.getProductsData();
       this.productsDatas = productsLoaded;
     } else {
       this.getProductsData();
     }
   }
 
-  getProductsData(): void {
+  async getProductsData(): Promise<void> {
     this.productsService
       .getAllProduct()
       .pipe(takeUntil(this.destroy$))
