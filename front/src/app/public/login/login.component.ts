@@ -67,7 +67,7 @@ export class LoginComponent implements OnInit, OnDestroy {
             this.messageService.add({
               severity: 'error',
               summary: 'Erro',
-              detail: 'Error ao criar usuario!',
+              detail: 'Usuario ou senha invalido!',
               life: 2000,
             });
 
