@@ -13,8 +13,10 @@ import { CardModule } from 'primeng/card';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { CookieService } from 'ngx-cookie-service';
+import { SharedModule } from 'src/app/shared/shared.module';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 @NgModule({
-  declarations: [HomeComponent],
+  declarations: [HomeComponent, DashboardComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -27,6 +29,7 @@ import { CookieService } from 'ngx-cookie-service';
     CardModule,
     ToastModule,
     ChartModule,
+    SharedModule,
   ],
 
   providers: [MessageService, CookieService],

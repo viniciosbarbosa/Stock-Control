@@ -1,0 +1,9 @@
+<app-toolbar></app-toolbar>
+
+<div class="col-12">
+  <app-products-table
+    [productsTable]="productsDatas"
+    (editSelectProductEvent)="handleProductAction($event)"
+    (deleteProductEvent)="handleDeleteProductAction($event)"
+  ></app-products-table>
+</div>
