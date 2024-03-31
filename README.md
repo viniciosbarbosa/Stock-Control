@@ -1,5 +1,5 @@
 # Stock-Control<br>
 
-Angular v15<br>
+Angular v16<br>
 Lib PrimeNG<br>
 Nodejs para back end
