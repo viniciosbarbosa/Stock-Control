@@ -119,6 +119,7 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
           next: (response) => {
             if (response) {
               this.categoryForm.reset();
+              this.dialog.close();
               this.messageService.add({
                 severity: 'success',
                 summary: 'Sucesso',
